@@ -1,0 +1,101 @@
+[
+  {
+    "id": "001",
+    "name": "Happy",
+    "photo": "happy-001",
+    "photoAuthor": "Mariese Streefland",
+    "breed": "Beagle",
+    "characteristics": "Active, Adventurous, Friendly",
+    "size": "Medium",
+    "sex": "Male",
+    "age": "Adult"
+  },
+  {
+    "id": "002",
+    "name": "Pitt",
+    "photo": "pitt-002",
+    "photoAuthor": "Victor Grabarczyk",
+    "breed": "Stafford",
+    "characteristics": "Calm, Outgoing",
+    "size": "Medium",
+    "sex": "Male",
+    "age": "Young"
+  },
+  {
+    "id": "003",
+    "name": "Fluffy",
+    "photo": "fluffy-003",
+    "photoAuthor": "Angel Luciano",
+    "breed": "Golden Retriever",
+    "characteristics": "Playful, Loves running, Hates rain",
+    "size": "Large",
+    "sex": "Male",
+    "age": "Adult"
+  },
+  {
+    "id": "004",
+    "name": "Rose",
+    "photo": "rose-004",
+    "photoAuthor": "Dim Hou",
+    "breed": "Unknown",
+    "characteristics": "Curious, Friendly",
+    "size": "Small",
+    "sex": "Female",
+    "age": "Young"
+  },
+  {
+    "id": "005",
+    "name": "Connie",
+    "photo": "connie-005",
+    "photoAuthor": "Christian Bowen",
+    "breed": "Siberian Husky",
+    "characteristics": "Gentle, Affectionate, Loves rain",
+    "size": "Large",
+    "sex": "Female",
+    "age": "Adult"
+  },
+  {
+    "id": "006",
+    "name": "Tulip",
+    "photo": "tulip-006",
+    "photoAuthor": "Dena Simard",
+    "breed": "Maltese",
+    "characteristics": "Energetic, Friendly",
+    "size": "Small",
+    "sex": "Female",
+    "age": "Young"
+  },
+  {
+    "id": "007",
+    "name": "Lilly",
+    "photo": "lilly-007",
+    "photoAuthor": "Izabelly Marques",
+    "breed": "Cavalier King Charles Spaniel",
+    "characteristics": "Quiet, Loves kisses, Gentle",
+    "size": "Small",
+    "sex": "Female",
+    "age": "Young"
+  },
+  {
+    "id": "008",
+    "name": "Bernie",
+    "photo": "bernie-008",
+    "photoAuthor": "Alexandra Lau",
+    "breed": "Bernese",
+    "characteristics": "Loyal, Playful, Affectionate",
+    "size": "Large",
+    "sex": "Male",
+    "age": "Adult"
+  },
+  {
+    "id": "009",
+    "name": "Tigi",
+    "photo": "tigi-009",
+    "photoAuthor": "Danijela Vrzan",
+    "breed": "Unknown",
+    "characteristics": "Stubborn, Playful, Loves Outdoors",
+    "size": "Medium",
+    "sex": "Male",
+    "age": "Adult"
+  }
+]
