@@ -40,6 +40,7 @@ struct SliderView: View {
     HStack {
       Text(title)
       UIKitSlider(value: $value)
+      let _ = Self._printChanges()
     }
     .padding(.horizontal)
   }

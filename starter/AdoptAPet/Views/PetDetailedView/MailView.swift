@@ -30,79 +30,51 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+import UIKit
 import SwiftUI
+import MessageUI
 
-struct PetDetailedInformationView: View {
-  @Binding var pet: Pet
-  @State private var isFavorite = false
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: 8) {
-      // Breed
-      Text("Breed")
-        .detailedInfoTitle()
-      Text(pet.breed)
-        .prefixedWithSFSymbol(named: "pawprint")
-        .symbolEffect(.bounce.down, value: isFavorite)
-
-
-      // Characteristics
-      Text("Characteristics")
-        .detailedInfoTitle()
-      Text(pet.characteristics)
-        .prefixedWithSFSymbol(named: "theatermasks.circle")
-        .symbolEffect(.bounce.down, value: isFavorite)
-
-      // Size
-      Text("Size")
-        .detailedInfoTitle()
-      Text(pet.size)
-        .prefixedWithSFSymbol(named: "flame")
-        .symbolEffect(.bounce.down, value: isFavorite)
-
-      // Sex
-      Text("Sex")
-        .detailedInfoTitle()
-      Text(pet.sex)
-        .prefixedWithSFSymbol(named: "bolt.circle")
-        .symbolEffect(.bounce.down, value: isFavorite)
-
-      // Age
-      Text("Age")
-        .detailedInfoTitle()
-      Text(pet.age)
-        .prefixedWithSFSymbol(named: "star")
-        .symbolEffect(.bounce.down, value: isFavorite)
-
-      Button {
-        isFavorite.toggle()
-      } label: {
-        Label("Toggle Fav", systemImage: isFavorite ? "checkmark" : "heart")
+struct MailView: UIViewControllerRepresentable {
+  func updateUIViewController(_ uiViewController: MFMailComposeViewController, context: Context) {
+  }
+  
+  @Binding var isShowing: Bool
+  @Binding var result: Result<MFMailComposeResult, Error>?
+  var receipients = [String]()
+  var messageBody = ""
+  
+  func makeCoordinator() -> Coordinator {
+    return Coordinator(isShowing: $isShowing, result: $result)
+  }
+  func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
+    let vc = MFMailComposeViewController()
+    vc.setToRecipients(receipients)
+    vc.setMessageBody(messageBody, isHTML: true)
+    vc.mailComposeDelegate = context.coordinator
+    return vc
+  }
+  class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
+    
+    @Binding var isShowing: Bool
+    @Binding var result: Result<MFMailComposeResult, Error>?
+    
+    init(isShowing: Binding<Bool>,
+         result: Binding<Result<MFMailComposeResult, Error>?>) {
+      _isShowing = isShowing
+      _result = result
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController,
+                               didFinishWith result: MFMailComposeResult,
+                               error: Error?) {
+      defer {
+        isShowing = false
       }
-      .contentTransition(.symbolEffect(.replace))
-      .padding(.leading, 12)
-      let _ = Self._printChanges()
-
-      ColorPickerView(red: $pet.colorRed , green: $pet.colorGreen , blue: $pet.colorBlue )
-        .padding()
+      guard error == nil else {
+        self.result = .failure(error!)
+        return
+      }
+      self.result = .success(result)
     }
   }
-}
-
-#Preview("Error State") {
-  @State var pet: Pet = Pet.example
-
-  return PetDetailedInformationView(pet: $pet)
-}
-
-#Preview("Empty State") {
-  @State var pet: Pet = Pet.example
-
-  return PetDetailedInformationView(pet: $pet)
-}
-
-#Preview(traits: .landscapeLeft) {
-  @State var pet: Pet = Pet.example
-
-  return PetDetailedInformationView(pet: $pet)
 }

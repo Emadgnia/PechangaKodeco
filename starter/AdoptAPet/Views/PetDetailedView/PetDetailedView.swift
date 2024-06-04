@@ -45,6 +45,8 @@ struct PetDetailedView: View {
           ZStack(alignment: .bottom) {
             Image(pet.photo)
               .photoStyle(withMaxWidth: geometry.size.width)
+              .resizableView()
+
             Rectangle()
               .overlay(alignment: .trailing) {
                 Text("Photo by \(pet.photoAuthor)")
@@ -63,7 +65,7 @@ struct PetDetailedView: View {
           Divider()
             .padding(.horizontal, 16)
 
-          AdoptionFormView()
+          AdoptionFormView(colorRed: $pet.colorRed, colorGreen: $pet.colorGreen, colorBlue: $pet.colorBlue)
 
           Spacer()
         }

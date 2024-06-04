@@ -31,13 +31,18 @@
 /// THE SOFTWARE.
 
 import SwiftUI
+import MessageUI
 
 struct AdoptionFormView: View {
   @State private var showingAlert = false
   @State private var adopt = false
-
+  @State var isShowingMailView = false
   @StateObject var emailValidator = EmailValidator()
-
+  @State var result: Result<MFMailComposeResult, Error>? = nil
+  @Binding var colorRed: Float
+  @Binding var colorGreen: Float
+  @Binding var colorBlue: Float
+  
   var body: some View {
     VStack(alignment: .leading) {
       Section {
@@ -58,8 +63,7 @@ struct AdoptionFormView: View {
 
       VStack(alignment: .center) {
         Button {
-          showingAlert = true
-          emailValidator.email = ""
+          isShowingMailView = true
         } label: {
           Text("Adopt Me")
         }
@@ -70,11 +74,14 @@ struct AdoptionFormView: View {
       }
       .frame(maxWidth: .infinity)
     }
+    .sheet(isPresented: $isShowingMailView) {
+      MailView(isShowing: self.$isShowingMailView, result: self.$result, receipients: [emailValidator.email], messageBody: "I want a pet with this colors: Red \(colorRed), Blue \(colorBlue), Green \(colorGreen)")
+    }
   }
 }
-
-struct AdoptionFormView_Previews: PreviewProvider {
-  static var previews: some View {
-    AdoptionFormView()
-  }
-}
+//
+//struct AdoptionFormView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    AdoptionFormView()
+//  }
+//}
