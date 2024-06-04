@@ -1,4 +1,4 @@
-/// Copyright (c) 2022 Razeware LLC
+/// Copyright (c) 2024 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,36 +30,24 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import Foundation
+import SwiftUI
 
-struct Pet: Decodable, Hashable {
-  let id: String
-  let name: String
-  let photo: String
-  let photoAuthor: String
-  let breed: String
-  let characteristics: String
-  let size: String
-  let sex: String
-  let age: String
-  var colorRed: Float
-  var colorGreen: Float
-  var colorBlue: Float
+struct SliderView: View {
+  let title: String
+  @Binding var value: Float
   
-#if DEBUG
-  static let example = Pet(
-    id: "008",
-    name: "Bernie",
-    photo: "bernie-008",
-    photoAuthor: "Alexandra Lau",
-    breed: "Bernese",
-    characteristics: "Loyal, Playful, Affectionate",
-    size: "Large",
-    sex: "Male",
-    age: "Adult",
-    colorRed: 0.2,
-    colorGreen: 0.3,
-    colorBlue: 0.7
-  )
-#endif
+  var body: some View {
+    HStack {
+      Text(title)
+      UIKitSlider(value: $value)
+    }
+    .padding(.horizontal)
+  }
+}
+struct SliderView_Previews: PreviewProvider {
+  @State static var value: Float = 0.5
+
+  static var previews: some View {
+    SliderView(title: "Volume", value: $value)
+  }
 }

@@ -8,7 +8,10 @@
     "characteristics": "Active, Adventurous, Friendly",
     "size": "Medium",
     "sex": "Male",
-    "age": "Adult"
+    "age": "Adult",
+    "colorRed": 0.2,
+    "colorGreen": 0.3,
+    "colorBlue": 0.7
   },
   {
     "id": "002",
@@ -19,7 +22,10 @@
     "characteristics": "Calm, Outgoing",
     "size": "Medium",
     "sex": "Male",
-    "age": "Young"
+    "age": "Young",
+    "colorRed": 0.2,
+    "colorGreen": 0.3,
+    "colorBlue": 0.7
   },
   {
     "id": "003",
@@ -30,7 +36,10 @@
     "characteristics": "Playful, Loves running, Hates rain",
     "size": "Large",
     "sex": "Male",
-    "age": "Adult"
+    "age": "Adult",
+    "colorRed": 0.2,
+    "colorGreen": 0.3,
+    "colorBlue": 0.7
   },
   {
     "id": "004",
@@ -41,7 +50,10 @@
     "characteristics": "Curious, Friendly",
     "size": "Small",
     "sex": "Female",
-    "age": "Young"
+    "age": "Young",
+    "colorRed": 0.2,
+    "colorGreen": 0.3,
+    "colorBlue": 0.7
   },
   {
     "id": "005",
@@ -52,7 +64,10 @@
     "characteristics": "Gentle, Affectionate, Loves rain",
     "size": "Large",
     "sex": "Female",
-    "age": "Adult"
+    "age": "Adult",
+    "colorRed": 0.2,
+    "colorGreen": 0.3,
+    "colorBlue": 0.7
   },
   {
     "id": "006",
@@ -63,7 +78,10 @@
     "characteristics": "Energetic, Friendly",
     "size": "Small",
     "sex": "Female",
-    "age": "Young"
+    "age": "Young",
+    "colorRed": 0.2,
+    "colorGreen": 0.3,
+    "colorBlue": 0.7
   },
   {
     "id": "007",
@@ -74,7 +92,10 @@
     "characteristics": "Quiet, Loves kisses, Gentle",
     "size": "Small",
     "sex": "Female",
-    "age": "Young"
+    "age": "Young",
+    "colorRed": 0.2,
+    "colorGreen": 0.3,
+    "colorBlue": 0.7
   },
   {
     "id": "008",
@@ -85,7 +106,10 @@
     "characteristics": "Loyal, Playful, Affectionate",
     "size": "Large",
     "sex": "Male",
-    "age": "Adult"
+    "age": "Adult",
+    "colorRed": 0.2,
+    "colorGreen": 0.3,
+    "colorBlue": 0.7
   },
   {
     "id": "009",
@@ -96,6 +120,9 @@
     "characteristics": "Stubborn, Playful, Loves Outdoors",
     "size": "Medium",
     "sex": "Male",
-    "age": "Adult"
+    "age": "Adult",
+    "colorRed": 0.2,
+    "colorGreen": 0.3,
+    "colorBlue": 0.7
   }
 ]

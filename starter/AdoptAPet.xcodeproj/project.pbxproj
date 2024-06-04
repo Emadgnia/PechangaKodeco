@@ -12,6 +12,10 @@
 		18D775C722AD944400AE281E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18D775C622AD944400AE281E /* Assets.xcassets */; };
 		18D775CA22AD944400AE281E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18D775C922AD944400AE281E /* Preview Assets.xcassets */; };
 		18D775D822AD963800AE281E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18D775DA22AD963800AE281E /* LaunchScreen.storyboard */; };
+		7CBB61162C0F751C003AC6AB /* PetDetailedInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB61152C0F751C003AC6AB /* PetDetailedInformationView.swift */; };
+		7CBB61182C0F8446003AC6AB /* UIKitSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB61172C0F8446003AC6AB /* UIKitSlider.swift */; };
+		7CBB611A2C0F8716003AC6AB /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB61192C0F8716003AC6AB /* SliderView.swift */; };
+		7CBB611C2C0F87C3003AC6AB /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB611B2C0F87C3003AC6AB /* ColorPickerView.swift */; };
 		EA6CCA6C285D44910076F731 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6CCA6B285D44910076F731 /* Pet.swift */; };
 		EA6CCA6E285D4D030076F731 /* pets.json in Resources */ = {isa = PBXBuildFile; fileRef = EA6CCA6D285D4D030076F731 /* pets.json */; };
 		EA6CCA71285D4D290076F731 /* CodableBundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6CCA70285D4D290076F731 /* CodableBundleExtension.swift */; };
@@ -30,6 +34,10 @@
 		18D775C922AD944400AE281E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		18D775CE22AD944400AE281E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18D775DE22AD96B400AE281E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7CBB61152C0F751C003AC6AB /* PetDetailedInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetDetailedInformationView.swift; sourceTree = "<group>"; };
+		7CBB61172C0F8446003AC6AB /* UIKitSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitSlider.swift; sourceTree = "<group>"; };
+		7CBB61192C0F8716003AC6AB /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
+		7CBB611B2C0F87C3003AC6AB /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		EA6CCA6B285D44910076F731 /* Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
 		EA6CCA6D285D4D030076F731 /* pets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pets.json; sourceTree = "<group>"; };
 		EA6CCA70285D4D290076F731 /* CodableBundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableBundleExtension.swift; sourceTree = "<group>"; };
@@ -157,7 +165,11 @@
 			isa = PBXGroup;
 			children = (
 				EA6CCA72285D55E70076F731 /* PetDetailedView.swift */,
+				7CBB61152C0F751C003AC6AB /* PetDetailedInformationView.swift */,
 				EA6CCA922861680A0076F731 /* AdoptionFormView.swift */,
+				7CBB61172C0F8446003AC6AB /* UIKitSlider.swift */,
+				7CBB61192C0F8716003AC6AB /* SliderView.swift */,
+				7CBB611B2C0F87C3003AC6AB /* ColorPickerView.swift */,
 			);
 			path = PetDetailedView;
 			sourceTree = "<group>";
@@ -276,14 +288,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CBB61182C0F8446003AC6AB /* UIKitSlider.swift in Sources */,
 				EA6CCA932861680A0076F731 /* AdoptionFormView.swift in Sources */,
 				EA6CCA71285D4D290076F731 /* CodableBundleExtension.swift in Sources */,
+				7CBB61162C0F751C003AC6AB /* PetDetailedInformationView.swift in Sources */,
 				EA6CCA8F285FC5270076F731 /* ViewModifiers.swift in Sources */,
 				EA6CCA6C285D44910076F731 /* Pet.swift in Sources */,
 				EA6CCA73285D55E70076F731 /* PetDetailedView.swift in Sources */,
 				18D775C522AD944300AE281E /* PetListView.swift in Sources */,
 				EA6CCA982862904B0076F731 /* EmailValidator.swift in Sources */,
+				7CBB611A2C0F8716003AC6AB /* SliderView.swift in Sources */,
 				EA6CCA75285D56780076F731 /* PetCardView.swift in Sources */,
+				7CBB611C2C0F87C3003AC6AB /* ColorPickerView.swift in Sources */,
 				1839F4B025190F2A00BB00F1 /* AppMain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

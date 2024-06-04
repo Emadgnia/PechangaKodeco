@@ -38,10 +38,7 @@ struct PetCardView: View {
   var body: some View {
     ZStack(alignment: .bottom) {
       Image(pet.photo)
-        .resizable()
-        .scaledToFill()
-        .frame(maxWidth: .infinity, maxHeight: 300)
-        .clipped()
+        .photoStyle()
       Rectangle()
         .overlay {
           Text(pet.name)

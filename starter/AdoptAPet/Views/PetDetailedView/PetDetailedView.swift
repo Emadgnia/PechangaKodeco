@@ -33,7 +33,7 @@
 import SwiftUI
 
 struct PetDetailedView: View {
-  var pet: Pet
+  @State var pet: Pet
   @State private var showingAlert = false
   @State private var adopt = false
   @State private var emailAddress = ""
@@ -44,10 +44,7 @@ struct PetDetailedView: View {
         VStack(alignment: .leading, spacing: 15) {
           ZStack(alignment: .bottom) {
             Image(pet.photo)
-              .resizable()
-              .scaledToFill()
-              .frame(maxWidth: geometry.size.width, maxHeight: 300)
-              .clipped()
+              .photoStyle(withMaxWidth: geometry.size.width)
             Rectangle()
               .overlay(alignment: .trailing) {
                 Text("Photo by \(pet.photoAuthor)")
@@ -59,77 +56,7 @@ struct PetDetailedView: View {
               .opacity(0.6)
           }
           //Information view
-          VStack(alignment: .leading, spacing: 8) {
-            // Breed
-            Text("Breed")
-              .lineLimit(1)
-              .font(.title2)
-              .bold()
-            HStack {
-              Image(systemName: "pawprint")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 17, height: 17)
-              Text(pet.breed)
-            }
-            .padding(.leading, 12)
-            
-            // Characteristics
-            Text("Characteristics")
-              .lineLimit(1)
-              .font(.title2)
-              .bold()
-            HStack {
-              Image(systemName: "theatermasks.circle")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 17, height: 17)
-              Text(pet.characteristics)
-            }
-            .padding(.leading, 12)
-            
-            // Size
-            Text("Size")
-              .lineLimit(1)
-              .font(.title2)
-              .bold()
-            HStack {
-              Image(systemName: "flame")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 17, height: 17)
-              Text(pet.size)
-            }
-            .padding(.leading, 12)
-            
-            // Sex
-            Text("Sex")
-              .lineLimit(1)
-              .font(.title2)
-              .bold()
-            HStack {
-              Image(systemName: "bolt.circle")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 17, height: 17)
-              Text(pet.sex)
-            }
-            .padding(.leading, 12)
-            
-            // Age
-            Text("Age")
-              .lineLimit(1)
-              .font(.title2)
-              .bold()
-            HStack {
-              Image(systemName: "star")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 17, height: 17)
-              Text(pet.age)
-            }
-            .padding(.leading, 12)
-          }
+          PetDetailedInformationView(pet: $pet)
           .padding(.leading, 20)
           .padding(.bottom, 15)
 

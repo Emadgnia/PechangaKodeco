@@ -1,4 +1,4 @@
-/// Copyright (c) 2022 Razeware LLC
+/// Copyright (c) 2024 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,36 +30,36 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import Foundation
+import SwiftUI
+import UIKit
 
-struct Pet: Decodable, Hashable {
-  let id: String
-  let name: String
-  let photo: String
-  let photoAuthor: String
-  let breed: String
-  let characteristics: String
-  let size: String
-  let sex: String
-  let age: String
-  var colorRed: Float
-  var colorGreen: Float
-  var colorBlue: Float
-  
-#if DEBUG
-  static let example = Pet(
-    id: "008",
-    name: "Bernie",
-    photo: "bernie-008",
-    photoAuthor: "Alexandra Lau",
-    breed: "Bernese",
-    characteristics: "Loyal, Playful, Affectionate",
-    size: "Large",
-    sex: "Male",
-    age: "Adult",
-    colorRed: 0.2,
-    colorGreen: 0.3,
-    colorBlue: 0.7
-  )
-#endif
+struct UIKitSlider: UIViewRepresentable {
+  @Binding var value: Float
+
+  func makeUIView(context: Context) -> UISlider {
+    let slider = UISlider()
+    slider.addTarget(context.coordinator, action: #selector(Coordinator.valueChanged(_:)), for: .valueChanged)
+    return slider
+  }
+
+  func updateUIView(_ uiView: UISlider, context: Context) {
+    uiView.value = value
+  }
+
+  func makeCoordinator() -> Coordinator {
+    Coordinator(value: $value)
+  }
+
+  class Coordinator: NSObject {
+    var value: Binding<Float>
+
+    init(value: Binding<Float>) {
+      self.value = value
+    }
+
+    @objc func valueChanged(_ sender: UISlider) {
+      self.value.wrappedValue = sender.value
+    }
+  }
 }
+

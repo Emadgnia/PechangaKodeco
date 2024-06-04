@@ -1,4 +1,4 @@
-/// Copyright (c) 2022 Razeware LLC
+/// Copyright (c) 2024 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,36 +30,54 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import Foundation
+import SwiftUI
 
-struct Pet: Decodable, Hashable {
-  let id: String
-  let name: String
-  let photo: String
-  let photoAuthor: String
-  let breed: String
-  let characteristics: String
-  let size: String
-  let sex: String
-  let age: String
-  var colorRed: Float
-  var colorGreen: Float
-  var colorBlue: Float
-  
-#if DEBUG
-  static let example = Pet(
-    id: "008",
-    name: "Bernie",
-    photo: "bernie-008",
-    photoAuthor: "Alexandra Lau",
-    breed: "Bernese",
-    characteristics: "Loyal, Playful, Affectionate",
-    size: "Large",
-    sex: "Male",
-    age: "Adult",
-    colorRed: 0.2,
-    colorGreen: 0.3,
-    colorBlue: 0.7
-  )
-#endif
+struct PetDetailedInformationView: View {
+  @Binding var pet: Pet
+  @State private var isFavorite = false
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      // Breed
+      Text("Breed")
+        .detailedInfoTitle()
+      Text(pet.breed)
+        .prefixedWithSFSymbol(named: "pawprint")
+
+
+      // Characteristics
+      Text("Characteristics")
+        .detailedInfoTitle()
+      Text(pet.characteristics)
+        .prefixedWithSFSymbol(named: "theatermasks.circle")
+
+      // Size
+      Text("Size")
+        .detailedInfoTitle()
+      Text(pet.size)
+        .prefixedWithSFSymbol(named: "flame")
+
+      // Sex
+      Text("Sex")
+        .detailedInfoTitle()
+      Text(pet.sex)
+        .prefixedWithSFSymbol(named: "bolt.circle")
+
+      // Age
+      Text("Age")
+        .detailedInfoTitle()
+      Text(pet.age)
+        .prefixedWithSFSymbol(named: "star")
+
+
+      ColorPickerView(red: $pet.colorRed , green: $pet.colorGreen , blue: $pet.colorBlue )
+        .padding()
+    }
+  }
 }
+
+//struct PetDetailedInformationView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    PetDetailedInformationView(pet: Pet.example)
+//  }
+//}

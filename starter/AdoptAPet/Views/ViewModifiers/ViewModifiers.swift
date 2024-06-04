@@ -33,26 +33,94 @@
 import SwiftUI
 
 // Title ViewModifier
-// TODO: 1
+// 1
+struct DetailedInfoTitleModifier: ViewModifier {
+  // 2
+  func body(content: Content) -> some View {
+    content
+      // 3
+      .lineLimit(1)
+      .font(.title2)
+      .bold()
+  }
+}
 
 // Text extension
-// TODO: 2
-
+extension Text {
+  func detailedInfoTitle() -> some View {
+    modifier(DetailedInfoTitleModifier())
+  }
+}
 // Button Label Modifier
 // TODO: 3
 
 // Button Style
 // TODO: 4
-
+struct PrimaryButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .font(.title2)
+      .padding(.horizontal, 30)
+      .padding(.vertical, 8)
+      .foregroundColor(
+        configuration.isPressed
+        ? Color.mint.opacity(0.2)
+        : Color.pink
+      )
+      .overlay(
+        RoundedRectangle(cornerRadius: 8)
+          .stroke(
+            configuration.isPressed
+            ? Color.mint.opacity(0.2)
+            : Color.pink, lineWidth: 1.5
+          )
+      )
+  }
+}
 // Email Validate View Modifier
 // TODO: 5
-
+struct Validate: ViewModifier {
+  var value: String
+  var validator: (String) -> Bool
+  
+  func body(content: Content) -> some View {
+    content.border(validator(value) ? .green : .secondary)
+  }
+}
 // TextField extension
 // TODO: 6
-
+extension TextField {
+  func validateEmail(
+    value: String,
+    validator: @escaping (String) -> (Bool)
+  ) -> some View {
+    modifier(Validate(value: value, validator: validator))
+  }
+}
 // Image extension
 // TODO: 7
-
-// CHALLENGE SOLUTION
+extension Image {
+  func photoStyle(
+    withMaxWidth maxWidth: CGFloat = .infinity,
+    withMaxHeight maxHeight: CGFloat = 300) -> some View {
+      self
+        .resizable()
+        .scaledToFill()
+        .frame(maxWidth: maxWidth, maxHeight: maxHeight)
+        .clipped()
+    }
+}
 // View extension
-// TODO: Challenge
+extension Text {
+  func prefixedWithSFSymbol(named name: String) -> some View {
+    HStack {
+      Image(systemName: name)
+        .resizable()
+        .scaledToFit()
+        .frame(width: 20, height: 20)
+
+      self
+    }
+    .padding(.leading, 12)
+  }
+}

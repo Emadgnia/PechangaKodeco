@@ -42,6 +42,9 @@ struct AdoptionFormView: View {
     VStack(alignment: .leading) {
       Section {
         TextField("Email address", text: $emailValidator.email)
+          .validateEmail(value: emailValidator.email) { email in
+            emailValidator.isValid(email)
+          }
           .textFieldStyle(.roundedBorder)
           .padding()
           .autocorrectionDisabled()
@@ -59,18 +62,11 @@ struct AdoptionFormView: View {
           emailValidator.email = ""
         } label: {
           Text("Adopt Me")
-            .font(.title2)
-            .padding(.horizontal, 30)
-            .padding(.vertical, 8)
-            .foregroundColor(Color.pink)
-            .overlay(
-              RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.pink, lineWidth: 1.5)
-            )
         }
         .alert("Thank you!", isPresented: $showingAlert) {
           Button("OK", role: .cancel) {}
         }
+        .buttonStyle(PrimaryButtonStyle())
       }
       .frame(maxWidth: .infinity)
     }
