@@ -30,72 +30,164 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-//import Foundation
-//import AuthenticationServices
-//import UIKit
-//
-//@Observable
-//@MainActor
-//class AuthenticationHandler: NSObject {
-//  
-//  var callbackURLScheme = "com.raywenderlich.StarCharles"
-//  var sheetIsActive = false
-//  let contextProvider: ASPresentationAnchor?
-//  
-//  init(contextProvider: ASPresentationAnchor?) {
-//    self.contextProvider = contextProvider
-//  }
-//}
-//
-//
-//extension AuthenticationHandler {
-//  
-//  @discardableResult
-//  func getIdTokenOrLoginIfNeeded() async throws -> String {
-//  }
-//  private func getAuthorizationCode () async -> Result<String, Error> {
-//  }
-//  private func getToken(authorizationCode: String? = nil, refreshToken: String? = nil) async throws -> TokenModel {
-//  }
-//  func logout() throws {
-//  }
-//}
-//
-//extension AuthenticationHandler: ASWebAuthenticationPresentationContextProviding {
-//  public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-//    return self.contextProvider ?? ASPresentationAnchor()
-//  }
-//}
-//
-//
-//
-//extension NetworkingHandler {
-//  
-//  public static var authorizeURL = "https://github.com/login/oauth/authorize"
-//  public static var accessTokenURL = "https://github.com/login/oauth/access_token"
-//  public static var verifier = SecurityHelper.generateCodeVerifier()
-//  public static var challenge = SecurityHelper.generateCodeChallenge(from: verifier)
-//  
-//  static func createAuthorizationURL() -> URL? {
-//  }
-//  static func createTokenRequest(urlString: String,
-//                                 method: String,
-//                                 header: [String: String],
-//                                 body: Data?) throws -> URLRequest {
-//  }
-//  static func createBody(code: String? = nil, refreshToken: String? = nil) -> Data? {
-//  }
-//  
-//  
-//  private static func createUrlComponents(url: URL, queryItems: [URLQueryItem]?) -> URLComponents {
-//    var urlComponents = URLComponents()
-//    urlComponents.scheme = url.scheme
-//    urlComponents.host = url.host
-//    urlComponents.path = url.path
-//    urlComponents.queryItems = queryItems
-//    return urlComponents
-//  }
-//  
-//  
-//}
-//
+import Foundation
+import AuthenticationServices
+import UIKit
+
+@Observable
+@MainActor
+class AuthenticationHandler: NSObject {
+  
+  var callbackURLScheme = "com.raywenderlich.StarCharles"
+  var sheetIsActive = false
+  let contextProvider: ASPresentationAnchor?
+  
+  init(contextProvider: ASPresentationAnchor?) {
+    self.contextProvider = contextProvider
+  }
+}
+
+
+extension AuthenticationHandler {
+  
+  @discardableResult
+  func getIdTokenOrLoginIfNeeded() async throws -> String {
+    let callBackURL = await getAuthorizationCode()
+    let tokenModel = try await getToken(authorizationCode: callBackURL.get())
+    KeychainHelper.create(value: tokenModel.accessToken, forIdentifier: "accessTokenId")
+    return tokenModel.accessToken
+    
+    
+  }
+  private func getAuthorizationCode () async -> Result<String, Error> {
+    return await withCheckedContinuation { [weak self] continuation in
+      guard let self = self else {
+        return continuation.resume(returning: .failure(CustomError.invalidData))
+      }
+      guard let url = NetworkingHandler.createAuthorizationURL() else {
+        return continuation.resume(returning: .failure(CustomError.invalidURL))
+      }
+      
+      if !sheetIsActive {
+        let authenticationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURLScheme) { [weak self] callbackURL, error in
+          self?.sheetIsActive = false
+          if let error = error {
+            continuation.resume(returning: .failure(CustomError.dissmissLogin(error: error.localizedDescription)))
+          } else {
+            if let callbackURL = callbackURL,
+               let queryItems = URLComponents(string: callbackURL.absoluteString)?.queryItems,
+               let code = queryItems.first(where: {$0.name == "code"})?.value {
+              continuation.resume(returning: .success(code))
+            } else {
+              continuation.resume(returning: .failure(CustomError.invalidData))
+            }
+          }
+        }
+        authenticationSession.presentationContextProvider = self
+        authenticationSession.prefersEphemeralWebBrowserSession = false
+        sheetIsActive = authenticationSession.start()
+      } else {
+        continuation.resume(returning: .failure(CustomError.internalError("The sheet is there already")))
+      }
+    }
+    
+  }
+  private func getToken(authorizationCode: String? = nil, refreshToken: String? = nil) async throws -> TokenModel {
+    do {
+      var body: Data?
+      if let code = authorizationCode {
+        body = NetworkingHandler.createBody(code: code)
+      }
+      
+      let request = try NetworkingHandler.createTokenRequest(
+        urlString: NetworkingHandler.accessTokenURL,
+        method: "POST",
+        header: ["Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"],
+        body: body
+      )
+      
+      if let response: TokenModel = try await NetworkingHandler.sendRequest(request: request) {
+        return response
+      } else {
+        throw CustomError.invalidData
+      }
+    } catch let error {
+      throw error
+    }
+    
+    
+  }
+  func logout() throws {
+  }
+}
+
+extension AuthenticationHandler: ASWebAuthenticationPresentationContextProviding {
+  public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+    return self.contextProvider ?? ASPresentationAnchor()
+  }
+}
+
+
+
+extension NetworkingHandler {
+  
+  public static var authorizeURL = "https://github.com/login/oauth/authorize"
+  public static var accessTokenURL = "https://github.com/login/oauth/access_token"
+  public static var verifier = SecurityHelper.generateCodeVerifier()
+  public static var challenge = SecurityHelper.generateCodeChallenge(from: verifier)
+  
+  static func createAuthorizationURL() -> URL? {
+    guard let authorizeURL = URL(string: NetworkingHandler.authorizeURL) else {
+      return nil
+    }
+    let queryItems = [
+      URLQueryItem(name: "client_id", value: "Ov23liORMNilbcrDa7bC"),
+      URLQueryItem(name: "redirect_uri", value: "com.raywenderlich.StarCharles://callback"),
+      URLQueryItem(name: "response_type", value: "code"),
+      URLQueryItem(name: "scope", value: "read:user user:email"),
+      URLQueryItem(name: "code_challenge_method", value: "S256"),
+      URLQueryItem(name: "code_challenge", value: challenge)
+    ]
+    return createUrlComponents(url: authorizeURL, queryItems: queryItems).url
+    
+  }
+  static func createTokenRequest(urlString: String,
+                                 method: String,
+                                 header: [String: String],
+                                 body: Data?) throws -> URLRequest {
+    guard let url = URL(string: urlString) else { throw CustomError.invalidURL }
+    var URLRequest = URLRequest(url: url)
+    URLRequest.httpMethod = method
+    URLRequest.allHTTPHeaderFields = header
+    URLRequest.httpBody = body
+    return URLRequest
+    
+    
+  }
+  static func createBody(code: String? = nil, refreshToken: String? = nil) -> Data? {
+    guard let url = URL(string: NetworkingHandler.accessTokenURL) else {return nil}
+    
+    var queryItems = [
+      URLQueryItem(name: "client_id", value: "Ov23liORMNilbcrDa7bC"),
+      URLQueryItem(name: "client_secret", value: "9b0ce014ae90dde0ad4c5b143a8ba84299679a12"),
+      URLQueryItem(name: "redirect_uri", value: "com.raywenderlich.StarCharles://callback"),
+    ]
+    if let code = code {
+      queryItems.append(URLQueryItem(name: "code", value: code))
+    }
+    return createUrlComponents(url: url, queryItems: queryItems).query?.data(using: .utf8)
+  }
+  
+  
+  private static func createUrlComponents(url: URL, queryItems: [URLQueryItem]?) -> URLComponents {
+    var urlComponents = URLComponents()
+    urlComponents.scheme = url.scheme
+    urlComponents.host = url.host
+    urlComponents.path = url.path
+    urlComponents.queryItems = queryItems
+    return urlComponents
+  }
+  
+  
+}
+
