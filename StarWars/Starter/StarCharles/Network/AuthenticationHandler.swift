@@ -30,72 +30,72 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import Foundation
-import AuthenticationServices
-import UIKit
-
-@Observable
-@MainActor
-class AuthenticationHandler: NSObject {
-  
-  var callbackURLScheme = "com.raywenderlich.StarCharles"
-  var sheetIsActive = false
-  let contextProvider: ASPresentationAnchor?
-  
-  init(contextProvider: ASPresentationAnchor?) {
-    self.contextProvider = contextProvider
-  }
-}
-
-
-extension AuthenticationHandler {
-  
-  @discardableResult
-  func getIdTokenOrLoginIfNeeded() async throws -> String {
-  }
-  private func getAuthorizationCode () async -> Result<String, Error> {
-  }
-  private func getToken(authorizationCode: String? = nil, refreshToken: String? = nil) async throws -> TokenModel {
-  }
-  func logout() throws {
-  }
-}
-
-extension AuthenticationHandler: ASWebAuthenticationPresentationContextProviding {
-  public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-    return self.contextProvider ?? ASPresentationAnchor()
-  }
-}
-
-
-
-extension NetworkingHandler {
-  
-  public static var authorizeURL = "https://github.com/login/oauth/authorize"
-  public static var accessTokenURL = "https://github.com/login/oauth/access_token"
-  public static var verifier = SecurityHelper.generateCodeVerifier()
-  public static var challenge = SecurityHelper.generateCodeChallenge(from: verifier)
-  
-  static func createAuthorizationURL() -> URL? {
-  }
-  static func createTokenRequest(urlString: String,
-                                 method: String,
-                                 header: [String: String],
-                                 body: Data?) throws -> URLRequest {
-  }
-  static func createBody(code: String? = nil, refreshToken: String? = nil) -> Data? {
-  }
-  
-  
-  private static func createUrlComponents(url: URL, queryItems: [URLQueryItem]?) -> URLComponents {
-    var urlComponents = URLComponents()
-    urlComponents.scheme = url.scheme
-    urlComponents.host = url.host
-    urlComponents.path = url.path
-    urlComponents.queryItems = queryItems
-    return urlComponents
-  }
-  
-  
-}
-
+//import Foundation
+//import AuthenticationServices
+//import UIKit
+//
+//@Observable
+//@MainActor
+//class AuthenticationHandler: NSObject {
+//  
+//  var callbackURLScheme = "com.raywenderlich.StarCharles"
+//  var sheetIsActive = false
+//  let contextProvider: ASPresentationAnchor?
+//  
+//  init(contextProvider: ASPresentationAnchor?) {
+//    self.contextProvider = contextProvider
+//  }
+//}
+//
+//
+//extension AuthenticationHandler {
+//  
+//  @discardableResult
+//  func getIdTokenOrLoginIfNeeded() async throws -> String {
+//  }
+//  private func getAuthorizationCode () async -> Result<String, Error> {
+//  }
+//  private func getToken(authorizationCode: String? = nil, refreshToken: String? = nil) async throws -> TokenModel {
+//  }
+//  func logout() throws {
+//  }
+//}
+//
+//extension AuthenticationHandler: ASWebAuthenticationPresentationContextProviding {
+//  public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+//    return self.contextProvider ?? ASPresentationAnchor()
+//  }
+//}
+//
+//
+//
+//extension NetworkingHandler {
+//  
+//  public static var authorizeURL = "https://github.com/login/oauth/authorize"
+//  public static var accessTokenURL = "https://github.com/login/oauth/access_token"
+//  public static var verifier = SecurityHelper.generateCodeVerifier()
+//  public static var challenge = SecurityHelper.generateCodeChallenge(from: verifier)
+//  
+//  static func createAuthorizationURL() -> URL? {
+//  }
+//  static func createTokenRequest(urlString: String,
+//                                 method: String,
+//                                 header: [String: String],
+//                                 body: Data?) throws -> URLRequest {
+//  }
+//  static func createBody(code: String? = nil, refreshToken: String? = nil) -> Data? {
+//  }
+//  
+//  
+//  private static func createUrlComponents(url: URL, queryItems: [URLQueryItem]?) -> URLComponents {
+//    var urlComponents = URLComponents()
+//    urlComponents.scheme = url.scheme
+//    urlComponents.host = url.host
+//    urlComponents.path = url.path
+//    urlComponents.queryItems = queryItems
+//    return urlComponents
+//  }
+//  
+//  
+//}
+//

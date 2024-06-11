@@ -60,11 +60,11 @@ struct ContentView: View {
       .navigationTitle(Text("StarCharles"))
     }
     .navigationViewStyle(StackNavigationViewStyle())
-    .task {
-      let auth = AuthenticationHandler(contextProvider: nil)
-      let token = try? await auth.getIdTokenOrLoginIfNeeded()
-      print(token)
-    }
+//    .task {
+//      let auth = AuthenticationHandler(contextProvider: nil)
+//      let token = try? await auth.getIdTokenOrLoginIfNeeded()
+//      print(token)
+//    }
   }
   
 }

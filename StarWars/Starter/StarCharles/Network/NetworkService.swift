@@ -32,17 +32,77 @@
 
 import Foundation
 
-
-
 public final class NetworkingHandler {
   
   @discardableResult
   static func sendRequest<Response: Codable>(request: URLRequest, sessionDelegate: URLSessionTaskDelegate? = nil) async throws -> Response {
-
+    let session: URLSession
+    if let delegate = sessionDelegate {
+      session = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
+    } else {
+      session = URLSession.shared
+    }
+    do {
+      let (data, response) = try await session.data(for: request)
+      guard let response = response as? HTTPURLResponse else {
+        throw CustomError.noResponse
+      }
+      
+      switch response.statusCode {
+      case 200...299:
+        if data.isEmpty {
+          throw CustomError.emptyResponseData
+        } else {
+          let decoder = JSONDecoder()
+          decoder.dateDecodingStrategy = .secondsSince1970
+          print("----- Response ------")
+          print(request.url)
+          do {
+            return try decoder.decode(Response.self, from: data)
+          } catch {
+            print("----- Decoding Error ----- \(error)")
+            throw CustomError.decodingError(error.localizedDescription)
+          }
+        }
+      case 401:
+        throw CustomError.unauthorized
+      case 402:
+        throw CustomError.clientEntityError(data: data, code: response.statusCode)
+      case 403:
+        throw CustomError.forbidden
+      case 404...499:
+        throw CustomError.clientEntityError(data: data, code: response.statusCode)
+      case 500...599:
+        throw CustomError.backendError(response.statusCode)
+      default:
+        throw CustomError.unexpectedStatusCode(response.statusCode)
+      }
+    } catch {
+      if let error = error as? URLError {
+        throw CustomError.urlError(error.errorCode, error.localizedDescription)
+      } else {
+        throw error
+      }
+    }
   }
   
   static func makeURLRequest(request: RequestModel) throws -> URLRequest {
+    guard let url = URL(string: request.baseURL + request.path.rawValue) else {
+      throw CustomError.invalidURL
+    }
     
+    var URLRequest = URLRequest(url: url)
+    URLRequest.httpMethod = request.method.rawValue
+    URLRequest.allHTTPHeaderFields = request.header
+    print("---- URL Request ----")
+    print("\(url)")
+    
+    if let body = request.body {
+      URLRequest.httpBody = body
+      print("---- URL Body ----")
+      print("\(body)")
+    }
+    return URLRequest
   }
 }
 

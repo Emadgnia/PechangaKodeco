@@ -35,23 +35,35 @@ import SwiftUI
 import Observation
 
 @Observable
-class ViewModel: ObservableObject {
+class ViewModel {
   var films: [Film] = []
   var characters: [Character] = []
   var options = Options.allItems
 
   func fetchFilmsAsync() async throws {
-
+    let request = RequestModel(path: .films, method: .get, header: ["Content-Type": "application/json", "cache-control": "no-cache"])
+    let urlRequest = try NetworkingHandler.makeURLRequest(request: request)
+    let films: Films = try await NetworkingHandler.sendRequest(request: urlRequest)
+    self.films = films.results
   }
   
   func fetchFilmAsync(urlString: String) async throws {
-
+    let request = RequestModel(baseURL: urlString, path: .empty, method: .get, header: ["Content-Type": "application/json", "cache-control": "no-cache"])
+    let urlRequest = try NetworkingHandler.makeURLRequest(request: request)
+    let film: Film = try await NetworkingHandler.sendRequest(request: urlRequest)
+    self.films.append(film)
   }
   
   func fetchCharacterAsync(urlString: String) async throws {
-
+    let request = RequestModel(baseURL: urlString, path: .empty, method: .get, header: ["Content-Type": "application/json", "cache-control": "no-cache"])
+    let urlRequest = try NetworkingHandler.makeURLRequest(request: request)
+    let character: Character = try await NetworkingHandler.sendRequest(request: urlRequest)
+    self.characters.append(character)
   }
   func fetchCharactersAsync() async throws {
-
-  }  
+    let request = RequestModel(path: .people, method: .get, header: ["Content-Type": "application/json", "cache-control": "no-cache"])
+    let urlRequest = try NetworkingHandler.makeURLRequest(request: request)
+    let characters: Characters = try await NetworkingHandler.sendRequest(request: urlRequest)
+    self.characters = characters.results
+  }
 }
