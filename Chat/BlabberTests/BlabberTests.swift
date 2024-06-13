@@ -40,12 +40,27 @@ class BlabberTests: XCTestCase {
     // 2 Test Configuration for the URL
     // 3 Url Session and assign it to the model
     // 4 model needs to have a sleep
-   
+   let model = BlabberModel()
+    model.username = "test"
+    
+    let testConfi = URLSessionConfiguration.default
+    testConfi.protocolClasses = [TestURLProtocol.self]
+    
+    model.urlSession = URLSession(configuration: testConfi)
+    model.sleep = { try await Task.sleep(for: .nanoseconds($0))}
+    return model
+    
   }()
 
   func testModelSay() async throws {
     // ask model to say Hello
     // get Hello back from server
+    try await model.say("Hello!")
+    let request = try XCTUnwrap(TestURLProtocol.lastRequest)
+    XCTAssertEqual(request.url?.absoluteString, "http://localhost:8080/chat/say")
+    let httpBody = try XCTUnwrap(request.httpBody)
+    let message = try XCTUnwrap(try? JSONDecoder().decode(Message.self, from: httpBody))
+  
     XCTAssertEqual(message.message, "Hello!")
 
   }
@@ -53,6 +68,19 @@ class BlabberTests: XCTestCase {
   func testModelCountdown() async throws {
    // ask model to start the countdown
     // get the following
+    async let countdown: Void = model.countdown(to: "Tada!")
+    async let messages = TimeoutTask(seconds: 10) {
+      await TestURLProtocol.requests
+        .prefix(4)
+        .compactMap(\.httpBody)
+        .compactMap { data in
+          try? JSONDecoder().decode(Message.self, from: data).message
+        }
+        .reduce(into: []) { result, request in
+          result.append(request)
+        }
+    }.value
+    let (messagesResult, _) = try await (messages, countdown)
     
     XCTAssertEqual(
       ["3...", "2...", "1...", "🎉 Tada!"],
