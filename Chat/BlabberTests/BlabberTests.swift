@@ -36,15 +36,27 @@ import XCTest
 class BlabberTests: XCTestCase {
   @MainActor
   let model: BlabberModel = {
-    // 1
+    // 1 Model
+    // 2 Test Configuration for the URL
+    // 3 Url Session and assign it to the model
+    // 4 model needs to have a sleep
    
   }()
 
   func testModelSay() async throws {
-    
+    // ask model to say Hello
+    // get Hello back from server
+    XCTAssertEqual(message.message, "Hello!")
+
   }
 
   func testModelCountdown() async throws {
-   
+   // ask model to start the countdown
+    // get the following
+    
+    XCTAssertEqual(
+      ["3...", "2...", "1...", "🎉 Tada!"],
+      messagesResult
+    )
   }
 }

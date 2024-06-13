@@ -45,6 +45,13 @@ struct ScanTask: Identifiable {
   /// A method that performs the scanning.
   /// > Note: This is a mock method that just suspends for a second.
   func run() async throws -> String {
-    
+    try await UnreliableAPI.shared.action(failingEvery: 10)
+    await Task(priority: .medium) {
+      await withUnsafeContinuation { input in
+        Thread.sleep(forTimeInterval: 1)
+        input.resume()
+      }
+    }.value
+    return "\(input)"
   }
 }
